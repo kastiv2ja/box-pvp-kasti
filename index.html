@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informacje o serwerze Minecraft</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            text-align: center;
+            padding: 50px;
+        }
+        h1 {
+            color: #333;
+        }
+        .server-info {
+            margin-top: 20px;
+            background-color: #444;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .server-info a {
+            color: #ffcc00;
+            text-decoration: none;
+        }
+        .status {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .online {
+            color: green;
+        }
+        .offline {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Informacje o serwerze Minecraft</h1>
+        <div class="server-info">
+            <p><strong>IP serwera:</strong> RPkastratowice.aternos.me:12821</p>
+            <p><strong>Wersja:</strong> 1.20.1</p>
+            <p><strong>Discord:</strong> <a href="https://discord.gg/vDcG3JUS" target="_blank">Kliknij tutaj, aby dołączyć do Discorda</a></p>
+        </div>
+
+        <div class="status">
+            <p><strong>Status serwera:</strong> <span id="server-status" class="offline">Sprawdzanie...</span></p>
+        </div>
+    </div>
+
+    <script>
+        // Sprawdzanie statusu serwera (można użyć Minecraft Server Ping API do tego celu)
+        const serverIP = "RPkastratowice.aternos.me";
+        const serverPort = 12821;
+        const statusElement = document.getElementById("server-status");
+
+        async function checkServerStatus() {
+            try {
+                const response = await fetch(`https://api.mcsrvstat.us/2/${serverIP}:${serverPort}`);
+                const data = await response.json();
+                
+                if (data.online) {
+                    statusElement.textContent = "Serwer jest online!";
+                    statusElement.classList.remove("offline");
+                    statusElement.classList.add("online");
+                } else {
+                    statusElement.textContent = "Serwer jest offline!";
+                    statusElement.classList.remove("online");
+                    statusElement.classList.add("offline");
+                }
+            } catch (error) {
+                statusElement.textContent = "Błąd połączenia!";
+                statusElement.classList.remove("online", "offline");
+                statusElement.classList.add("offline");
+            }
+        }
+
+        // Sprawdzanie statusu serwera po załadowaniu strony
+        window.onload = checkServerStatus;
+    </script>
+</body>
+</html>
